@@ -41,7 +41,7 @@ void bgiLoop() {
 	
 	// Transition settings
 	float angle = 0;
-	bool clockwise = false;
+	bool clockwise = true;
 	int thickness = 1;
 	float scaling = 0.005;
 	bool scaleDown = true;
@@ -75,20 +75,19 @@ void bgiLoop() {
 	// Instruction
 	cout << "====================================================" << endl;
 	cout << "== Animated Pattern by Muhammad Jaysy Ansharulloh ==" << endl;
-	cout << "==                             Version 2019-11-27 ==" << endl;
+	cout << "==                             Version 2019-11-30 ==" << endl;
 	cout << "====================================================" << endl;
 	cout << "   Instructions:" << endl;
-	cout << "   > KEY_UP\t: Speed up" << endl;
-	cout << "   > KEY_DOWN\t: Slow down" << endl;
+	cout << "   > KEY_UP\t: Speed Up" << endl;
+	cout << "   > KEY_DOWN\t: Slow Down" << endl;
 	cout << "   > KEY_LEFT\t: Simplify Stars" << endl;
 	cout << "   > KEY_RIGHT\t: Complicate Stars" << endl;
-	cout << "   > KEY_ESC\t: Exit program" << endl;
+	cout << "   > KEY_TAB\t: Change Direction of Rotation" << endl;
+	cout << "   > KEY_ESCAPE\t: Exit Program" << endl;
 	cout << "====================================================" << endl;
 	
-	while(esc != KEY_ESC) {
+	while(esc != VK_ESCAPE) {
 		while(midRad > 0) {
-			clockwise = !clockwise;
-			
 			// Outside Square Object
 			drawSquare(Point(midX, midY), outSquareRad, angle, WHITE);
 			drawSquare(Point(midX, midY), outSquareRad, -angle, WHITE);
@@ -117,6 +116,7 @@ void bgiLoop() {
 					drawStar(Point(midX+midX/2, midY+midY/2), (sideRad-thick) * sideSize, angle, static_cast<colors>(rand() % 15 + 1));
 				}
 			}
+			clockwise = !clockwise; // TODO solve the bug
 			midRad -= midRadDec;
 			sideRad -= sideRadDec;
 			
@@ -146,46 +146,52 @@ void bgiLoop() {
 		angle < 360 ? angle++ : angle = 0;
 		
 		if(kbhit()) {
-			cout << ">";
 			switch(getch()) {
-				case KEY_ESC: {
-					esc = KEY_ESC;
-					cout << "Exiting Program..." << endl;
+				case VK_ESCAPE: {
+					esc = VK_ESCAPE;
+					cout << "> Exiting Program..." << endl;
 					break;
 				}
 				case KEY_UP: {
 					if(delaymsec > 0) delaymsec -= delayinc;
-					cout << "Delay\t: " << delaymsec << "ms" << endl;
+					cout << "> Delay\t: " << delaymsec << "ms" << endl;
 					break;
 				}
 				case KEY_DOWN: {
 					if(delaymsec < maxdelay) delaymsec += delayinc;
-					cout << "Delay\t: " << delaymsec << "ms" << endl;
+					cout << "> Delay\t: " << delaymsec << "ms" << endl;
 					break;
 				}
 				case KEY_LEFT: {
 					if(totalPileOfStars > 1) totalPileOfStars--;
 					midRadDec = midRadInit / totalPileOfStars;
 					sideRadDec = sideRadInit / totalPileOfStars;
-					cout << "Star Piles\t: " << totalPileOfStars << endl;
+					cout << "> Star Piles\t: " << totalPileOfStars << endl;
 					break;
 				}
 				case KEY_RIGHT: {
 					if(totalPileOfStars < maxPileOfStars) totalPileOfStars++;
 					midRadDec = midRadInit / totalPileOfStars;
 					sideRadDec = sideRadInit / totalPileOfStars;
-					cout << "Star Piles\t: " << totalPileOfStars << endl;
+					cout << "> Star Piles\t: " << totalPileOfStars << endl;
 					break;
 				}
-				case KEY_SPACE: {
+				case VK_SPACE: {
 					bool pause = true;
-					cout << "Program Paused." << endl;
+					cout << "> Program Paused." << endl;
 					while(pause) {
 						if(kbhit()) {
-							if(getch() == KEY_SPACE) pause = false;
+							if(getch() == VK_SPACE) pause = false;
 						}
 					}
-					cout << ">Program Resumed." << endl;
+					cout << "> Program Resumed." << endl;
+					break;
+				}
+				case VK_TAB: {
+					clockwise = !clockwise;
+					cout << "> Clockwise\t: ";
+					clockwise ? cout << "true" : cout << "false";
+					cout << endl;
 					break;
 				}
 			}

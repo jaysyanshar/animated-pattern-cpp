@@ -13,9 +13,6 @@
 
 #define round(a) ((int) (a + 0.5))
 
-#define KEY_ESC 27
-#define KEY_SPACE 32
-
 /****************************/
 /*			POINT			*/
 /****************************/
