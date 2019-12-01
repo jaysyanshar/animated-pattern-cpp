@@ -143,7 +143,7 @@ class Circle {
 /*			ELLIPSE			*/
 /****************************/
 
-class EllipseShape {
+class Ellipse {
 	private:
 		Point mid;
 		int radX;
@@ -154,7 +154,7 @@ class EllipseShape {
 		void plotPoint(int x, int y, colors color);
 		
 	public:
-		EllipseShape(Point mid, int radX, int radY, colors color);
+		Ellipse(Point mid, int radX, int radY, colors color);
 		
 		void setMid(Point mid) { this->mid = mid; }
 		void setRadX(int radX) { this->radX = radX; }

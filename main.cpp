@@ -22,6 +22,10 @@ void drawStar(Point mid, int rad, float angle, colors color) {
 	rhomb.drawDDA();
 }
 
+colors randColor() {
+	return static_cast<colors>(rand() % 16);
+}
+
 void drawSquare(Point mid, int rad, float angle, colors color) {
 	Quad rect = Quad(Point(mid.getX()-rad, mid.getY()-rad), Point(mid.getX()+rad, mid.getY()-rad), Point(mid.getX()+rad, mid.getY()+rad), Point(mid.getX()-rad, mid.getY()+rad), color);
 	rect.rotateFrom(mid, angle);
@@ -38,11 +42,12 @@ void bgiLoop() {
 	// Window settings
 	char esc = 0;
 	int page = 0;
+	setbkcolor(randColor());
 	
 	// Transition settings
 	float angle = 0;
 	bool clockwise = true;
-	int thickness = 1;
+	int thickness = NORM_WIDTH;
 	float scaling = 0.005;
 	bool scaleDown = true;
 	unsigned int delaymsec = 0;
@@ -61,16 +66,19 @@ void bgiLoop() {
 	int midRad = midRadInit;
 	int midRadDec = midRadInit / totalPileOfStars;
 	float midSize = 1;
+	colors midStarColor = randColor();
 	
 	// Side Star Objects
 	int sideRadInit = midRadInit / 2;
 	int sideRad = sideRadInit;
 	int sideRadDec = sideRadInit / totalPileOfStars;
 	float sideSize = 0;
+	colors sideStarColor = randColor();
 	
 	// Outside Square Object
 	int outSquareRad;
 	midX < midY ? outSquareRad = midX - midX / 3 : outSquareRad = midY - midY / 3;
+	colors outSquareColor = randColor();
 	
 	// Instruction
 	cout << "====================================================" << endl;
@@ -83,37 +91,38 @@ void bgiLoop() {
 	cout << "   > KEY_LEFT\t: Simplify Stars" << endl;
 	cout << "   > KEY_RIGHT\t: Complicate Stars" << endl;
 	cout << "   > KEY_TAB\t: Change Direction of Rotation" << endl;
+	cout << "   > KEY_RETURN\t: Re-Randomize Color" << endl;
 	cout << "   > KEY_ESCAPE\t: Exit Program" << endl;
 	cout << "====================================================" << endl;
 	
 	while(esc != VK_ESCAPE) {
 		while(midRad > 0) {
 			// Outside Square Object
-			drawSquare(Point(midX, midY), outSquareRad, angle, WHITE);
-			drawSquare(Point(midX, midY), outSquareRad, -angle, WHITE);
+			drawSquare(Point(midX, midY), outSquareRad, angle, outSquareColor);
+			drawSquare(Point(midX, midY), outSquareRad, -angle, outSquareColor);
 			
 			if(clockwise) { // TODO masih ada bug ketika pile 1, 3, 7, 10
 				for(int thick = 0; thick < thickness; thick++) {
 					// Mid Star Object
-					drawStar(Point(midX, midY), (midRad-thick) * midSize, angle, static_cast<colors>(rand() % 15 + 1));
+					drawStar(Point(midX, midY), (midRad-thick) * midSize, angle, midStarColor);
 					
 					// Side Star Objects
-					drawStar(Point(midX-midX/2, midY-midY/2), (sideRad-thick) * sideSize, angle, static_cast<colors>(rand() % 15 + 1));
-					drawStar(Point(midX+midX/2, midY-midY/2), (sideRad-thick) * sideSize, -angle, static_cast<colors>(rand() % 15 + 1));
-					drawStar(Point(midX-midX/2, midY+midY/2), (sideRad-thick) * sideSize, angle, static_cast<colors>(rand() % 15 + 1));
-					drawStar(Point(midX+midX/2, midY+midY/2), (sideRad-thick) * sideSize, -angle, static_cast<colors>(rand() % 15 + 1));
+					drawStar(Point(midX-midX/2, midY-midY/2), (sideRad-thick) * sideSize, angle, sideStarColor);
+					drawStar(Point(midX+midX/2, midY-midY/2), (sideRad-thick) * sideSize, -angle, sideStarColor);
+					drawStar(Point(midX-midX/2, midY+midY/2), (sideRad-thick) * sideSize, angle, sideStarColor);
+					drawStar(Point(midX+midX/2, midY+midY/2), (sideRad-thick) * sideSize, -angle, sideStarColor);
 				}
 			}
 			else {
 				for(int thick = 0; thick < thickness; thick++) {
 					// Mid Star Object
-					drawStar(Point(midX, midY), (midRad-thick) * midSize, -angle, static_cast<colors>(rand() % 15 + 1));
+					drawStar(Point(midX, midY), (midRad-thick) * midSize, -angle, midStarColor);
 					
 					// Side Star Objects
-					drawStar(Point(midX-midX/2, midY-midY/2), (sideRad-thick) * sideSize, -angle, static_cast<colors>(rand() % 15 + 1));
-					drawStar(Point(midX+midX/2, midY-midY/2), (sideRad-thick) * sideSize, angle, static_cast<colors>(rand() % 15 + 1));
-					drawStar(Point(midX-midX/2, midY+midY/2), (sideRad-thick) * sideSize, -angle, static_cast<colors>(rand() % 15 + 1));
-					drawStar(Point(midX+midX/2, midY+midY/2), (sideRad-thick) * sideSize, angle, static_cast<colors>(rand() % 15 + 1));
+					drawStar(Point(midX-midX/2, midY-midY/2), (sideRad-thick) * sideSize, -angle, sideStarColor);
+					drawStar(Point(midX+midX/2, midY-midY/2), (sideRad-thick) * sideSize, angle, sideStarColor);
+					drawStar(Point(midX-midX/2, midY+midY/2), (sideRad-thick) * sideSize, -angle, sideStarColor);
+					drawStar(Point(midX+midX/2, midY+midY/2), (sideRad-thick) * sideSize, angle, sideStarColor);
 				}
 			}
 			clockwise = !clockwise; // TODO solve the bug
@@ -192,6 +201,14 @@ void bgiLoop() {
 					cout << "> Clockwise\t: ";
 					clockwise ? cout << "true" : cout << "false";
 					cout << endl;
+					break;
+				}
+				case VK_RETURN: {
+					setbkcolor(randColor());
+					midStarColor = randColor();
+					sideStarColor = randColor();
+					outSquareColor = randColor();
+					cout << "> Re-Randomizing Color..." << endl;
 					break;
 				}
 			}

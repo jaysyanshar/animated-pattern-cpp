@@ -238,7 +238,7 @@ void Circle::drawMidPoint() {
 /****************************/
 
 // Constructor
-EllipseShape::EllipseShape(Point mid, int radX, int radY, colors color) {
+Ellipse::Ellipse(Point mid, int radX, int radY, colors color) {
 	setMid(mid);
 	setRadX(radX);
 	setRadY(radY);
@@ -246,7 +246,7 @@ EllipseShape::EllipseShape(Point mid, int radX, int radY, colors color) {
 }
 
 // Plot point with putpixel()
-void EllipseShape::plotPoint(int x, int y, colors color) {
+void Ellipse::plotPoint(int x, int y, colors color) {
 	 putpixel(mid.getX() + x, mid.getY() + y, color);
 	 putpixel(mid.getX() - x, mid.getY() + y, color);
 	 putpixel(mid.getX() + x, mid.getY() - y, color);
@@ -254,7 +254,7 @@ void EllipseShape::plotPoint(int x, int y, colors color) {
 }
 
 // Draw using mid point algorithm
-void EllipseShape::drawMidPoint() {
+void Ellipse::drawMidPoint() {
 	int radXsqr = pow(radX, 2);
 	int radYsqr = pow(radY, 2);
 	int twoRadXsqr = 2 * radXsqr;
