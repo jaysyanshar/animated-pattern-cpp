@@ -1,6 +1,6 @@
 /**
 	Animated Pattern by Muhammad Jaysy Ansharulloh
-	25 November 2019 Version
+	1 December 2019 Version
 	Using BGIGRAPH library by Muhammad Jaysy Ansharulloh
 */
 
@@ -47,6 +47,7 @@ void bgiLoop() {
 	// Transition settings
 	float angle = 0;
 	bool clockwise = true;
+	bool normalDirection = true;
 	int thickness = NORM_WIDTH;
 	float scaling = 0.005;
 	bool scaleDown = true;
@@ -83,7 +84,7 @@ void bgiLoop() {
 	// Instruction
 	cout << "====================================================" << endl;
 	cout << "== Animated Pattern by Muhammad Jaysy Ansharulloh ==" << endl;
-	cout << "==                             Version 2019-11-30 ==" << endl;
+	cout << "==                             Version 2019-12-01 ==" << endl;
 	cout << "====================================================" << endl;
 	cout << "   Instructions:" << endl;
 	cout << "   > KEY_UP\t: Speed Up" << endl;
@@ -152,13 +153,18 @@ void bgiLoop() {
 		}
 		midRad = midRadInit;
 		sideRad = sideRadInit;
-		angle < 360 ? angle++ : angle = 0;
+		if(angle >= 0 && angle < 360) {
+			normalDirection ? angle++ : angle--;
+		}
+		else {
+			angle = 0;
+		}
 		
 		if(kbhit()) {
 			switch(getch()) {
 				case VK_ESCAPE: {
-					esc = VK_ESCAPE;
 					cout << "> Exiting Program..." << endl;
+					esc = VK_ESCAPE;
 					break;
 				}
 				case KEY_UP: {
@@ -197,18 +203,16 @@ void bgiLoop() {
 					break;
 				}
 				case VK_TAB: {
-					clockwise = !clockwise;
-					cout << "> Clockwise\t: ";
-					clockwise ? cout << "true" : cout << "false";
-					cout << endl;
+					cout << "> Changing Direction..." << endl;
+					normalDirection = !normalDirection;
 					break;
 				}
 				case VK_RETURN: {
+					cout << "> Re-Randomizing Color..." << endl;
 					setbkcolor(randColor());
 					midStarColor = randColor();
 					sideStarColor = randColor();
 					outSquareColor = randColor();
-					cout << "> Re-Randomizing Color..." << endl;
 					break;
 				}
 			}
