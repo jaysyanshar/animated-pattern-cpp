@@ -135,6 +135,7 @@ void bgiLoop() {
 			sideRad -= sideRadDec;
 			clockwise = !clockwise; // TODO masih ada bug glitch ketika total piles 1, 3, 7, 10
 			
+			// Scaling
 			if(midSize >= 0 && midSize <= 1) {
 				if(scaleDown) {
 					midSize -= scaling;
@@ -158,6 +159,8 @@ void bgiLoop() {
 		}
 		midRad = midRadInit;
 		sideRad = sideRadInit;
+		
+		// Rotate
 		normalDirection ? angle++ : angle--;
 		if(angle == 360) angle = 0;
 		if(angle == -1) angle = 359;
@@ -218,6 +221,26 @@ void bgiLoop() {
 					break;
 				}
 			}
+		}
+		
+		// Responsive
+		if(getmaxx() != midX * 2 || getmaxy() != midY * 2) {
+			// Object settings
+			midX = round(getmaxx() / 2);
+			midY = round(getmaxy() / 2);
+			
+			// Mid Star Object
+			midX < midY ? midRadInit = midX - 75 : midRadInit = midY - 75;
+			midRad = midRadInit;
+			midRadDec = midRadInit / totalPileOfStars;
+			
+			// Side Star Objects
+			sideRadInit = midRadInit / 2;
+			sideRad = sideRadInit;
+			sideRadDec = sideRadInit / totalPileOfStars;
+			
+			// Outside Square Object
+			midX < midY ? outSquareRad = midX - midX / 3 : outSquareRad = midY - midY / 3;
 		}
 		
 		// Transition
