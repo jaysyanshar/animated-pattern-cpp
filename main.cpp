@@ -11,6 +11,7 @@ using namespace std;
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
+// Draw Star Object
 void drawStar(Point mid, int rad, float angle, colors color) {
 	Quad rect = Quad(Point(mid.getX()-rad, mid.getY()-rad), Point(mid.getX()+rad, mid.getY()-rad), Point(mid.getX()+rad, mid.getY()+rad), Point(mid.getX()-rad, mid.getY()+rad), color);
 	rect.rotateFrom(mid, angle);
@@ -22,22 +23,26 @@ void drawStar(Point mid, int rad, float angle, colors color) {
 	rhomb.drawDDA();
 }
 
-colors randColor() {
-	return static_cast<colors>(rand() % 16);
-}
-
+// Draw Square Object
 void drawSquare(Point mid, int rad, float angle, colors color) {
 	Quad rect = Quad(Point(mid.getX()-rad, mid.getY()-rad), Point(mid.getX()+rad, mid.getY()-rad), Point(mid.getX()+rad, mid.getY()+rad), Point(mid.getX()-rad, mid.getY()+rad), color);
 	rect.rotateFrom(mid, angle);
 	rect.drawDDA();
 }
 
+// Get Random Color
+colors randColor() {
+	return static_cast<colors>(rand() % 16);
+}
+
+// Start BGI Window
 void bgiBegin() {
 	unsigned int screenWidth = 500;
 	unsigned int screenHeight = 500;
 	initwindow(screenWidth, screenHeight);
 }
 
+// BGI Program
 void bgiLoop() {
 	// Window settings
 	char esc = 0;
@@ -102,7 +107,7 @@ void bgiLoop() {
 			drawSquare(Point(midX, midY), outSquareRad, angle, outSquareColor);
 			drawSquare(Point(midX, midY), outSquareRad, -angle, outSquareColor);
 			
-			if(clockwise) { // TODO masih ada bug ketika pile 1, 3, 7, 10
+			if(clockwise) {
 				for(int thick = 0; thick < thickness; thick++) {
 					// Mid Star Object
 					drawStar(Point(midX, midY), (midRad-thick) * midSize, angle, midStarColor);
@@ -126,9 +131,9 @@ void bgiLoop() {
 					drawStar(Point(midX+midX/2, midY+midY/2), (sideRad-thick) * sideSize, angle, sideStarColor);
 				}
 			}
-			clockwise = !clockwise; // TODO solve the bug
 			midRad -= midRadDec;
 			sideRad -= sideRadDec;
+			clockwise = !clockwise; // TODO masih ada bug glitch ketika total piles 1, 3, 7, 10
 			
 			if(midSize >= 0 && midSize <= 1) {
 				if(scaleDown) {
@@ -228,11 +233,13 @@ void bgiLoop() {
 	esc = 0;
 }
 
+// Exit BGI Window
 void bgiEnd() {
 	cleardevice();
 	closegraph();
 }
 
+// Main Program
 int main(int argc, char** argv) {
 	bgiBegin();
 	bgiLoop();
