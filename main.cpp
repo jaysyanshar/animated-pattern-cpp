@@ -47,7 +47,7 @@ void bgiLoop() {
 	// Window settings
 	char esc = 0;
 	int page = 0;
-	setbkcolor(randColor());
+	setbkcolor(BLACK);
 	
 	// Transition settings
 	float angle = 0;
@@ -72,19 +72,19 @@ void bgiLoop() {
 	int midRad = midRadInit;
 	int midRadDec = midRadInit / totalPileOfStars;
 	float midSize = 1;
-	colors midStarColor = randColor();
+	colors midStarColor = LIGHTGREEN;
 	
 	// Side Star Objects
 	int sideRadInit = midRadInit / 2;
 	int sideRad = sideRadInit;
 	int sideRadDec = sideRadInit / totalPileOfStars;
 	float sideSize = 0;
-	colors sideStarColor = randColor();
+	colors sideStarColor = LIGHTRED;
 	
 	// Outside Square Object
 	int outSquareRad;
 	midX < midY ? outSquareRad = midX - midX / 3 : outSquareRad = midY - midY / 3;
-	colors outSquareColor = randColor();
+	colors outSquareColor = YELLOW;
 	
 	// Instruction
 	cout << "====================================================" << endl;
@@ -158,12 +158,9 @@ void bgiLoop() {
 		}
 		midRad = midRadInit;
 		sideRad = sideRadInit;
-		if(angle >= 0 && angle < 360) {
-			normalDirection ? angle++ : angle--;
-		}
-		else {
-			angle = 0;
-		}
+		normalDirection ? angle++ : angle--;
+		if(angle == 360) angle = 0;
+		if(angle == -1) angle = 359;
 		
 		if(kbhit()) {
 			switch(getch()) {
