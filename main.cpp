@@ -214,6 +214,7 @@ void bgiLoop() {
 			}
 		}
 		
+		// Transition
 		delay(delaymsec);
 		setactivepage(page);
 		setvisualpage(1-page);
